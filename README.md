@@ -50,5 +50,36 @@ when refreshing is done(for example, the image loading completes), you can invok
 mRefreshLayout.finishRefreshing();
 ```
 
+修改在Fragment中使用mRefreLayout.finishRefreshing()不返回列表顶部的问题。
+
+在CircleRefreshLayout中添加：
+``` java
+public void finishRefreshing() {
+        if (onCircleRefreshListener != null) {
+            onCircleRefreshListener.completeRefresh();
+        }
+        mIsRefreshing = false;
+        mHeader.setRefreshing(false);
+        back();
+    }
+    private void back() {
+        float height = mChildView.getTranslationY();
+        ValueAnimator backTopAni = ValueAnimator.ofFloat(height, 0);
+        backTopAni.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float val = (float) animation.getAnimatedValue();
+                val = decelerateInterpolator.getInterpolation(val / mHeaderHeight) * val;
+                if (mChildView != null) {
+                    mChildView.setTranslationY(val);
+                }
+                mHeader.getLayoutParams().height = (int) val;
+                mHeader.requestLayout();
+            }
+        });
+        backTopAni.setDuration((long) (height * BACK_TOP_DUR / mHeaderHeight));
+        backTopAni.start();
+    }
+```
 ###License###
 MIT
