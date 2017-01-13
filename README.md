@@ -5,7 +5,25 @@ This is a project with custom pull-to-refresh layout which contains a interestin
 
 ![](gif/circlerefresh.gif)  
 
+AS
 
+添加JitPack仓库
+
+``` java
+allprojects {
+        repositories {
+            ...
+            maven { url 'https://jitpack.io' }
+        }
+    }
+```
+添加依赖
+
+``` java
+dependencies {
+            compile 'com.github.Vurtex:CircleRefreshLayout:0.0.1'
+	}
+```
 
 ###Usage###
 
@@ -81,5 +99,3 @@ public void finishRefreshing() {
         backTopAni.start();
     }
 ```
-###License###
-MIT
