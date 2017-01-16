@@ -13,3 +13,25 @@
 .idea/vcs.xml
 
 .idea/misc.xml
+
+*.java
+
+*.json
+
+*.jar
+
+*.class
+
+*.txt
+
+*.properties
+
+*.xml
+
+*.png
+
+*.aar
+
+circlerefresh/build/outputs/aar/circlerefresh-release.aar
+
+circlerefresh/build/outputs/aar/circlerefresh-release.aar
