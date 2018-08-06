@@ -14,9 +14,7 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 
-/**
- * Created by zhanglei on 15/7/20.
- */
+
 public class CircleRefreshLayout extends FrameLayout {
 
     private static String TAG = "pullToRefresh";
@@ -161,8 +159,6 @@ public class CircleRefreshLayout extends FrameLayout {
         if (mChildView == null) {
             return false;
         }
-
-
         return ViewCompat.canScrollVertically(mChildView, -1);
     }
 
@@ -199,7 +195,6 @@ public class CircleRefreshLayout extends FrameLayout {
                 dy = Math.min(mPullHeight * 2, dy);
                 dy = Math.max(0, dy);
 
-
                 if (mChildView != null) {
                     float offsetY = decelerateInterpolator.getInterpolation(dy / 2 / mPullHeight) * dy / 2;
                     mChildView.setTranslationY(offsetY);
@@ -207,8 +202,6 @@ public class CircleRefreshLayout extends FrameLayout {
                     mHeader.getLayoutParams().height = (int) offsetY;
                     mHeader.requestLayout();
                 }
-
-
                 return true;
 
             case MotionEvent.ACTION_UP:
@@ -218,7 +211,7 @@ public class CircleRefreshLayout extends FrameLayout {
                         mUpBackAnimator.start();
                         mHeader.releaseDrag();
                         mIsRefreshing = true;
-                        if (onCircleRefreshListener!=null) {
+                        if (onCircleRefreshListener != null) {
                             onCircleRefreshListener.refreshing();
                         }
 
@@ -251,6 +244,37 @@ public class CircleRefreshLayout extends FrameLayout {
         return mIsRefreshing;
     }
 
+    public void startRefreshing() {
+        if (!mIsRefreshing) {
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    final MotionEvent event = MotionEvent.obtain(System.currentTimeMillis(), System.currentTimeMillis(), MotionEvent.ACTION_DOWN, getWidth() / 2, getHeight(), 0);
+                    dispatchTouchEvent(event);
+                    event.recycle();
+                }
+            });
+
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    final MotionEvent event = MotionEvent.obtain(System.currentTimeMillis(), System.currentTimeMillis(), MotionEvent.ACTION_MOVE, getWidth() / 2, getHeight() + Float.floatToIntBits(mHeaderHeight), 0);
+                    dispatchTouchEvent(event);
+                    event.recycle();
+                }
+            }, 100);
+
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    final MotionEvent event = MotionEvent.obtain(System.currentTimeMillis(), System.currentTimeMillis(), MotionEvent.ACTION_CANCEL, getWidth() / 2, getHeight(), 0);
+                    dispatchTouchEvent(event);
+                    event.recycle();
+                }
+            }, 600);
+        }
+    }
+
     public void finishRefreshing() {
         if (onCircleRefreshListener != null) {
             onCircleRefreshListener.completeRefresh();
@@ -259,6 +283,7 @@ public class CircleRefreshLayout extends FrameLayout {
         mHeader.setRefreshing(false);
         back();
     }
+
     private void back() {
         float height = mChildView.getTranslationY();
         ValueAnimator backTopAni = ValueAnimator.ofFloat(height, 0);
@@ -277,6 +302,7 @@ public class CircleRefreshLayout extends FrameLayout {
         backTopAni.setDuration((long) (height * BACK_TOP_DUR / mHeaderHeight));
         backTopAni.start();
     }
+
     private OnCircleRefreshListener onCircleRefreshListener;
 
     public void setOnRefreshListener(OnCircleRefreshListener onCircleRefreshListener) {

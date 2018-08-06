@@ -1,7 +1,6 @@
 package com.tuesda.circlerefreshlayout;
 
 import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.tuesda.walker.circlerefresh.CircleRefreshLayout;
 
@@ -18,37 +16,45 @@ public class MainActivity extends Activity {
 
     private CircleRefreshLayout mRefreshLayout;
     private ListView mList;
-    private Button mStop;
+    private Button mStart, mStop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mRefreshLayout = (CircleRefreshLayout) findViewById(R.id.refresh_layout);
-        mList = (ListView) findViewById(R.id.list);
-        mStop = (Button) findViewById(R.id.stop_refresh);
+        mRefreshLayout = findViewById(R.id.refresh_layout);
+        mList = findViewById(R.id.list);
+        mStart = findViewById(R.id.start_refresh);
+        mStop = findViewById(R.id.stop_refresh);
 
         String[] strs = {
-            "The",
-            "Canvas",
-            "class",
-            "holds",
-            "the",
-            "draw",
-            "calls",
-            ".",
-            "To",
-            "draw",
-            "something,",
-            "you",
-            "need",
-            "4 basic",
-            "components",
-            "Bitmap",
+                "The",
+                "Canvas",
+                "class",
+                "holds",
+                "the",
+                "draw",
+                "calls",
+                ".",
+                "To",
+                "draw",
+                "something,",
+                "you",
+                "need",
+                "4 basic",
+                "components",
+                "Bitmap",
         };
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, strs);
         mList.setAdapter(adapter);
+
+        mStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRefreshLayout.startRefreshing();
+            }
+        });
 
         mStop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,18 +65,16 @@ public class MainActivity extends Activity {
 
         mRefreshLayout.setOnRefreshListener(
                 new CircleRefreshLayout.OnCircleRefreshListener() {
-            @Override
-            public void refreshing() {
-                // do something when refresh starts
-            }
+                    @Override
+                    public void refreshing() {
+                        // do something when refresh starts
+                    }
 
-            @Override
-            public void completeRefresh() {
-                // do something when refresh complete
-            }
-        });
-
-
+                    @Override
+                    public void completeRefresh() {
+                        // do something when refresh complete
+                    }
+                });
 
 
     }

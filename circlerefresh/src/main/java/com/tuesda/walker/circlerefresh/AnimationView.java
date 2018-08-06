@@ -12,9 +12,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by zhanglei on 15/7/18.
- */
+
 public class AnimationView extends View {
 
     private static final String TAG = "AnimationView";
@@ -22,8 +20,6 @@ public class AnimationView extends View {
     private int PULL_HEIGHT;
     private int PULL_DELTA;
     private float mWidthOffset;
-
-
 
     private AnimatorStatus mAniStatus = AnimatorStatus.PULL_DOWN;
 
@@ -65,7 +61,6 @@ public class AnimationView extends View {
         }
     }
 
-
     private Paint mBackPaint;
     private Paint mBallPaint;
     private Paint mOutPaint;
@@ -86,7 +81,6 @@ public class AnimationView extends View {
     }
 
     private void initView(Context context, AttributeSet attrs, int defStyleAttr) {
-
         PULL_HEIGHT = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, context.getResources().getDisplayMetrics());
         PULL_DELTA = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, context.getResources().getDisplayMetrics());
         mWidthOffset = 0.5f;
@@ -106,9 +100,7 @@ public class AnimationView extends View {
         mOutPaint.setStyle(Paint.Style.STROKE);
         mOutPaint.setStrokeWidth(5);
 
-
         mPath = new Path();
-
     }
 
     private int mRadius;
@@ -136,7 +128,6 @@ public class AnimationView extends View {
                 mAniStatus = AnimatorStatus.PULL_DOWN;
             }
 
-
             switch (mAniStatus) {
                 case PULL_DOWN:
                     if (mHeight >= PULL_HEIGHT) {
@@ -146,7 +137,6 @@ public class AnimationView extends View {
                 case REL_DRAG:
                     break;
             }
-
         }
     }
 
@@ -185,7 +175,6 @@ public class AnimationView extends View {
             case STOP:
                 drawDone(canvas);
                 break;
-
         }
 
         if (mAniStatus == AnimatorStatus.REL_DRAG) {
@@ -235,7 +224,6 @@ public class AnimationView extends View {
             canvas.drawArc(new RectF(mWidth / 2 - mRadius, curH - mRadius, mWidth / 2 + mRadius, curH + mRadius),
                     180, 180, true, mBallPaint);
         }
-
     }
 
     private void drawPopBall(Canvas canvas) {
@@ -258,8 +246,6 @@ public class AnimationView extends View {
         } else {
             canvas.drawCircle(mWidth / 2, cirCenY, mRadius, mBallPaint);
         }
-
-
     }
 
     private void drawTail(Canvas canvas, int centerY, int bottom, float fraction) {
@@ -321,7 +307,6 @@ public class AnimationView extends View {
             applyDone();
 
         }
-
     }
 
     // stop refreshing
@@ -330,8 +315,6 @@ public class AnimationView extends View {
     }
 
     private void drawDone(Canvas canvas) {
-
-
         int beforeColor = mOutPaint.getColor();
         if (getDoneRatio() < 0.3) {
             canvas.drawRect(0, 0, mWidth, mHeight, mBackPaint);
@@ -368,7 +351,6 @@ public class AnimationView extends View {
                     mWidth - leftX, PULL_HEIGHT);
             canvas.drawPath(mPath, mBallPaint);
         }
-
     }
 
     private int mLastHeight;
@@ -380,7 +362,6 @@ public class AnimationView extends View {
     private int getSpringDelta() {
         return (int) (PULL_DELTA * getSprRatio());
     }
-
 
     private static long REL_DRAG_DUR = 200;
 
